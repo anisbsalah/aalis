@@ -26,6 +26,7 @@ echo "
 echo "[*] Dotfiles..."
 cp -r ~/aalis/settings/.config/* ~/.config/
 cp ~/aalis/settings/.face ~/
+cp ~/aalis/settings/.bashrc ~/
 
 # ----------------------------------------------------------------------------------------------------
 
@@ -85,6 +86,12 @@ set_path() {
 }
 
 set_path ~/bin ~/scripts ~/.local/bin' | sudo tee -a /etc/profile
+
+# ----------------------------------------------------------------------------------------------------
+
+echo "[*] Shells..."
+echo 'export ZDOTDIR=${HOME}/.config/zsh' | sudo tee -a /etc/zsh/zshenv
+sudo sed -i 's|HISTFILE=.*|HISTFILE="$HOME/.config/zsh/.zsh_history"|' /usr/share/oh-my-zsh/lib/history.zsh
 
 # ----------------------------------------------------------------------------------------------------
 
