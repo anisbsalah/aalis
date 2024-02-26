@@ -38,6 +38,8 @@ sudo cp ~/aalis/settings/backgrounds/* /usr/share/backgrounds/AbS-Wallpapers
 echo "[*] Cursors..."
 git clone https://github.com/anisbsalah/Catppuccin-Cursors.git /tmp/Catppuccin-Cursors
 sudo cp -rf /tmp/Catppuccin-Cursors/usr/share/icons/Catppuccin-Latte-Light-Cursors /usr/share/icons/
+git clone https://github.com/anisbsalah/Qogir-Cursors.git /tmp/Qogir-Cursors
+sudo cp -rf /tmp/Qogir-Cursors/usr/share/icons/Qogir-Cursors /usr/share/icons/
 
 # ----------------------------------------------------------------------------------------------------
 
