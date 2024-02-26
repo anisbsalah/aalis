@@ -53,9 +53,10 @@ if [[ ${DESKTOP_ENV} == cinnamon || ${DESKTOP_ENV} == xfce ]]; then
 [greeter]
 theme-name = Arc-Dark
 icon-theme-name = Papirus-Dark
-cursor-theme-name = Catppuccin-Latte-Light-Cursors
+cursor-theme-name = Qogir-Cursors
 cursor-theme-size = 24
 font-name = Noto Sans Bold 11
+user-background = false
 background = /usr/share/backgrounds/AbS-Wallpapers/lightdm-gtk_bg.jpg
 default-user-image = /usr/share/backgrounds/AbS-Wallpapers/avatar.png
 EOF
