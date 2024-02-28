@@ -494,7 +494,7 @@ select_disk() {
 	fi
 
 	if (dialog --backtitle "${apptitle}" --title "${txtdiskdevice}" \
-		--defaultno --yesno "${txtaskdiskssd//%1/${DISK}}" 7 45); then
+		--defaultno --yesno "${txtaskdiskssd//%1/${DISK}}" 8 45); then
 
 		set_option "SSD" "true"
 		set_option "BTRFS_MOUNT_OPTIONS" "defaults,noatime,compress=zstd,ssd,commit=120"
