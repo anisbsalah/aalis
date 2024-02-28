@@ -1423,7 +1423,7 @@ install_aur_helper() {
 	options+=("none" "")
 
 	if select_aur=$(dialog --backtitle "${apptitle}" --title "${txtaurhelper}" \
-		--menu "${txtselectaurhelper}" 0 35 0 "${options[@]}" --stdout); then
+		--menu "${txtselectaurhelper}" 0 45 0 "${options[@]}" --stdout); then
 
 		if [[ ${select_aur} != "none" ]]; then
 			msg="\nAUR helper to be installed: ${select_aur}"
