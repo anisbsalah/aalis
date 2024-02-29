@@ -221,7 +221,7 @@ mainmenu() {
 
 	if menupick=$(dialog --backtitle "${apptitle}" --title "${txtmainmenu}" \
 		--cancel-button "${txtexit}" --default-item "${nextitem}" \
-		--menu "Please select the desired settings for your system:" 0 45 0 \
+		--menu "Please select the desired settings for your system:" 0 48 0 \
 		"${options[@]}" 3>&1 1>&2 2>&3); then
 
 		case ${menupick} in
@@ -316,7 +316,7 @@ set_timezone() {
 	done
 
 	if timezone=$(dialog --backtitle "${apptitle}" --title "${txttimezone}" \
-		--default-item "${nextitem}" --menu "${txtselectzone}" 0 45 25 \
+		--default-item "${nextitem}" --menu "${txtselectzone}" 0 48 25 \
 		"${options[@]}" 3>&1 1>&2 2>&3); then
 
 		set_option "TIMEZONE" "${timezone}"
@@ -343,7 +343,7 @@ set_locale() {
 	done
 
 	if locale=$(dialog --backtitle "${apptitle}" --title "${txtlocale}" \
-		--checklist "${txtselectlocales}" 0 45 25 \
+		--checklist "${txtselectlocales}" 0 48 25 \
 		"${options[@]}" 3>&1 1>&2 2>&3); then
 
 		set_option "LOCALES" "(${locale})"
@@ -370,7 +370,7 @@ set_keymap() {
 	#done
 
 	if keymap=$(dialog --backtitle "${apptitle}" --title "${txtkeymap}" \
-		--menu "${txtselectkeyboard}" 0 45 25 \
+		--menu "${txtselectkeyboard}" 0 48 25 \
 		"${options[@]}" 3>&1 1>&2 2>&3); then
 
 		set_option "KEYMAP" "${keymap}"
@@ -392,7 +392,7 @@ set_consolefont() {
 	done
 
 	if vcfont=$(dialog --backtitle "${apptitle}" --title "${txtconsolefont}" \
-		--menu "${txtselectvcfont}" 0 45 25 \
+		--menu "${txtselectvcfont}" 0 48 25 \
 		"${options[@]}" 3>&1 1>&2 2>&3); then
 
 		set_option "CONSOLEFONT" "${vcfont}"
@@ -438,7 +438,7 @@ diskpartmenu() {
 
 	if diskmenupick=$(dialog --backtitle "${apptitle}" --title "${txtdiskpartmenu}" \
 		--cancel-button "${txtback}" --default-item "${nextitem}" \
-		--menu "Prepare the installation disk:" 0 45 0 \
+		--menu "Prepare the installation disk:" 0 48 0 \
 		"${options[@]}" 3>&1 1>&2 2>&3); then
 
 		case ${diskmenupick} in
@@ -480,7 +480,7 @@ select_disk() {
 	done
 	IFS=${IFS_ORIG}
 	if result=$(dialog --backtitle "${apptitle}" --title "${txtdiskdevice}" \
-		--menu "${txtaskdiskselection}" 0 46 0 \
+		--menu "${txtaskdiskselection}" 0 48 0 \
 		"${options[@]}" 3>&1 1>&2 2>&3); then
 
 		DISK="${result%%\ *}"
@@ -527,7 +527,7 @@ check_disk_selection() {
 confirm_selected_disk() {
 	if check_disk_selection; then
 		if (dialog --backtitle "${apptitle}" --title "${txtconfirm}" \
-			--defaultno --yesno "${txtconfirmselecteddevice//%1/${DISK}}" 7 45); then
+			--defaultno --yesno "${txtconfirmselecteddevice//%1/${DISK}}" 8 45); then
 
 			return 0
 		else
@@ -587,7 +587,7 @@ partition_table() {
 
 	if disk_slicing=$(dialog --backtitle "${apptitle}" --title "${txtpartitiontable}" \
 		--cancel-button "${txtback}" --default-item "${nextitem}" \
-		--menu "${txtselectpartitionscheme}" 8 41 0 \
+		--menu "${txtselectpartitionscheme}" 8 48 0 \
 		"${options[@]}" 3>&1 1>&2 2>&3); then
 
 		case ${disk_slicing} in
@@ -631,7 +631,7 @@ autopartitiontable() {
 	options+=("${txtautoparts} (No Swap)" "")
 
 	if auto_disk_slicing=$(dialog --backtitle "${apptitle}" --title "${txtpartitiontable}" \
-		--cancel-button "${txtback}" --menu "${txtselectpartitionscheme}" 8 0 0 \
+		--cancel-button "${txtback}" --menu "${txtselectpartitionscheme}" 8 48 0 \
 		"${options[@]}" 3>&1 1>&2 2>&3); then
 
 		case ${auto_disk_slicing} in
@@ -669,7 +669,7 @@ set_swap_size() {
 	result=$((result < 32 * 1024 ? result : 32 * 1024))
 
 	swap_size=$(dialog --backtitle "${apptitle}" --title "${txtswap}" \
-		--inputbox "${txtaskswapsize}\n(Default = ${result} MiB)" 0 46 "${result}" 3>&1 1>&2 2>&3)
+		--inputbox "${txtaskswapsize}\n(Default = ${result} MiB)" 0 48 "${result}" 3>&1 1>&2 2>&3)
 
 	SWAP_SIZE="${swap_size:=${result}}"
 	set_option "SWAP_SIZE" "${SWAP_SIZE}"
@@ -681,7 +681,7 @@ manualpartitiontable() {
 	options+=("${txtmanualparts} (cgdisk)" "")
 
 	if manual_disk_slicing=$(dialog --backtitle "${apptitle}" --title "${txtpartitiontable}" \
-		--cancel-button "${txtback}" --menu "${txtselectpartitionscheme}" 8 41 0 \
+		--cancel-button "${txtback}" --menu "${txtselectpartitionscheme}" 8 48 0 \
 		"${options[@]}" 3>&1 1>&2 2>&3); then
 
 		case ${manual_disk_slicing} in
@@ -836,7 +836,7 @@ filesystem() {
 	options+=("btrfs" "")
 
 	if filesystem=$(dialog --backtitle "${apptitle}" --title "${txtfilesystem}" \
-		--nocancel --menu "${txtselectfilesystem//%1/root}" 0 40 0 \
+		--nocancel --menu "${txtselectfilesystem//%1/root}" 0 48 0 \
 		"${options[@]}" 3>&1 1>&2 2>&3); then
 
 		set_option "root_filesystem" "${filesystem}"
@@ -934,7 +934,7 @@ filesystem_pkgs() {
 	options+=("dmraid" "" off)
 
 	if sel=$(dialog --backtitle "${apptitle}" --title "${txtfilesystem}" \
-		--checklist "${txtfilesystempkgs}" 0 40 0 \
+		--checklist "${txtfilesystempkgs}" 0 41 0 \
 		"${options[@]}" 3>&1 1>&2 2>&3); then
 
 		# Declare an array to store unique values
@@ -989,7 +989,7 @@ format_manual_partitions() {
 			options=()
 			options+=("${partitions[i]}" "")
 			if (dialog --backtitle "${apptitle}" --title "Select Partition $((i + 1)):" \
-				--nocancel --menu "" 6 40 0 "${options[@]}" --stdout); then
+				--nocancel --menu "" 6 48 0 "${options[@]}" --stdout); then
 
 				# Prompt for partition type using dialog
 				partition_type_prompt="What partition is ${partitions[i]} ?"
@@ -1007,7 +1007,7 @@ format_manual_partitions() {
 				options+=("other" "")
 
 				if partition_type=$(dialog --backtitle "${apptitle}" --title "${txtpartitioninglayout}" \
-					--nocancel --menu "${partition_type_prompt}" 0 40 0 "${options[@]}" --stdout); then
+					--nocancel --menu "${partition_type_prompt}" 0 48 0 "${options[@]}" --stdout); then
 
 					partitions_types+=("${partition_type}")
 					set_option "partitions_types" "(${partitions_types[*]})"
@@ -1041,11 +1041,11 @@ format_manual_partitions() {
 				fi
 
 				if select_mountpoint=$(dialog --backtitle "${apptitle}" --title "${txtmountpoint}" \
-					--nocancel --menu "${mountpoint_prompt}" 0 40 0 "${options[@]}" --stdout); then
+					--nocancel --menu "${mountpoint_prompt}" 0 48 0 "${options[@]}" --stdout); then
 
 					if [[ ${select_mountpoint} == "Enter manually" ]]; then
 						mountpoint=$(dialog --backtitle "${apptitle}" --title "${txtmountpoint}" \
-							--inputbox "${mountpoint_input}" 8 40 --stdout)
+							--inputbox "${mountpoint_input}" 8 48 --stdout)
 					else
 						mountpoint="${select_mountpoint}"
 					fi
@@ -1077,7 +1077,7 @@ format_manual_partitions() {
 				fi
 
 				if filesystem=$(dialog --backtitle "${apptitle}" --title "${txtfilesystem}" \
-					--nocancel --menu "${fs_prompt}" 0 40 0 "${options[@]}" --stdout); then
+					--nocancel --menu "${fs_prompt}" 0 48 0 "${options[@]}" --stdout); then
 
 					case ${filesystem} in
 					"btrfs")
@@ -1127,8 +1127,8 @@ prompt_for_subvolumes_mountpoints() {
 
 	# Use mixedform dialog to prompt for subvolumes and mountpoints
 	if dialog_output=$(dialog --backtitle "${apptitle}" --title "${txtbtrfssubvolumes}" --nocancel --mixedform "${txtentersubvolmntpts}" 0 0 0 \
-		"Subvolumes :" 1 1 "" 1 14 40 0 0 \
-		"Mountpoints:" 2 1 "" 2 14 40 0 0 \
+		"Subvolumes :" 1 1 "" 1 14 48 0 0 \
+		"Mountpoints:" 2 1 "" 2 14 48 0 0 \
 		--stdout); then
 
 		# Extract subvolumes and mountpoints from dialog output
@@ -1168,7 +1168,7 @@ swapfile() {
 		result=$((result < 32 * 1024 ? result : 32 * 1024))
 
 		swapfile_size=$(dialog --backtitle "${apptitle}" --title "${txtswapfile}" \
-			--inputbox "${txtswapfilesize}\n(Default = ${result} MiB)" 0 41 "${result}" 3>&1 1>&2 2>&3)
+			--inputbox "${txtswapfilesize}\n(Default = ${result} MiB)" 0 48 "${result}" 3>&1 1>&2 2>&3)
 
 		SWAPFILE_SIZE="${swapfile_size:=${result}}"
 		set_option "SWAPFILE_SIZE" "${SWAPFILE_SIZE}"
@@ -1196,7 +1196,7 @@ usersmenu() {
 
 	if usersmenupick=$(dialog --backtitle "${apptitle}" --title "${txtusersmenu}" \
 		--cancel-button "${txtback}" --default-item "${nextitem}" \
-		--menu "Set up users and passwords:" 0 45 0 "${options[@]}" 3>&1 1>&2 2>&3); then
+		--menu "Set up users and passwords:" 0 48 0 "${options[@]}" 3>&1 1>&2 2>&3); then
 
 		case ${usersmenupick} in
 		"${txtsethostname}")
@@ -1229,7 +1229,7 @@ usersmenu() {
 
 set_hostname() {
 	hostname=$(dialog --backtitle "${apptitle}" --title "${txtsethostname}" \
-		--nocancel --inputbox "Enter the hostname for this system:" 0 45 "ArchLinux" 3>&1 1>&2 2>&3)
+		--nocancel --inputbox "Enter the hostname for this system:" 0 48 "ArchLinux" 3>&1 1>&2 2>&3)
 
 	if [[ $? != "0" ]] || [[ -z ${hostname} ]]; then
 		msg="\nNo hostname set.\nTry again."
@@ -1243,7 +1243,7 @@ set_hostname() {
 
 set_username() {
 	username=$(dialog --backtitle "${apptitle}" --title "${txtsetusername}" \
-		--nocancel --inputbox "Username for your account:" 0 45 "" 3>&1 1>&2 2>&3)
+		--nocancel --inputbox "Username for your account:" 0 48 "" 3>&1 1>&2 2>&3)
 
 	if [[ $? != "0" ]] || [[ -z ${username} ]]; then
 		msg="\nNo username set.\nTry again."
@@ -1256,10 +1256,10 @@ set_username() {
 
 set_password() {
 	PASSWORD1=$(dialog --backtitle "${apptitle}" --title "${txtpassword//%1/${1}}" \
-		--nocancel --insecure --passwordbox "${txtaskpassword//%1/Enter}" 0 45 3>&1 1>&2 2>&3)
+		--nocancel --insecure --passwordbox "${txtaskpassword//%1/Enter}" 0 48 3>&1 1>&2 2>&3)
 
 	PASSWORD2=$(dialog --backtitle "${apptitle}" --title "${txtpassword//%1/${1}}" \
-		--nocancel --insecure --passwordbox "${txtaskpassword//%1/Confirm}" 0 45 3>&1 1>&2 2>&3)
+		--nocancel --insecure --passwordbox "${txtaskpassword//%1/Confirm}" 0 48 3>&1 1>&2 2>&3)
 
 	if [[ ${PASSWORD1} != "${PASSWORD2}" ]]; then
 		msg="\nPasswords do not match.\nTry again."
@@ -1302,7 +1302,7 @@ installmenu() {
 	options+=("${txtmainmenu}" "")
 	if sel=$(dialog --backtitle "${apptitle}" --title "${txtinstallmenu}" \
 		--cancel-button "${txtback}" --default-item "${nextitem}" \
-		--menu "Choose the desired installation settings:" 0 45 0 \
+		--menu "Choose the desired installation settings:" 0 48 0 \
 		"${options[@]}" 3>&1 1>&2 2>&3); then
 
 		case ${sel} in
@@ -1345,7 +1345,7 @@ install_kernel() {
 	options+=("linux-hardened" "")
 
 	if kernel=$(dialog --backtitle "${apptitle}" --title "${txtkernel}" \
-		--menu "${txtselectkernel}" 0 45 0 \
+		--menu "${txtselectkernel}" 0 48 0 \
 		"${options[@]}" 3>&1 1>&2 2>&3); then
 
 		msg="\nSelected kernel: ${kernel}"
@@ -1378,7 +1378,7 @@ install_desktop_env() {
 	done
 
 	if desktop_env=$(dialog --backtitle "${apptitle}" --title "${txtdesktopenv}" \
-		--menu "${txtselectdesktopenv}" 0 45 0 \
+		--menu "${txtselectdesktopenv}" 0 48 0 \
 		"${options[@]}" 3>&1 1>&2 2>&3); then
 
 		msg="\nDesktop Environment to be installed:\n> ${desktop_env}"
@@ -1423,7 +1423,7 @@ install_aur_helper() {
 	options+=("none" "")
 
 	if select_aur=$(dialog --backtitle "${apptitle}" --title "${txtaurhelper}" \
-		--menu "${txtselectaurhelper}" 0 45 0 "${options[@]}" --stdout); then
+		--menu "${txtselectaurhelper}" 0 48 0 "${options[@]}" --stdout); then
 
 		if [[ ${select_aur} != "none" ]]; then
 			msg="\nAUR helper to be installed: ${select_aur}"
@@ -1462,7 +1462,7 @@ summary() {
 
 # Function to display the file content in a dialog box
 display_file() {
-	dialog --backtitle "${apptitle}" --title "${txtconfigfile}" --textbox "${file_path}" 35 90
+	dialog --backtitle "${apptitle}" --title "${txtconfigfile}" --textbox "${file_path}" 33 90
 }
 
 # Function to edit the file
