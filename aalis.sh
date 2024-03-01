@@ -1531,7 +1531,6 @@ export DIALOGRC="dialog.archfi"
 load_strings
 welcome
 mainmenu
-
 if [[ ${desktop_env} == server ]]; then
 	set_option "INSTALL_TYPE" "Minimal"
 	set_option "AUR_HELPER" "none"
