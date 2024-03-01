@@ -397,9 +397,9 @@ set_consolefont() {
 
 		set_option "CONSOLEFONT" "${vcfont}"
 	else
-		msg="\nNo font selected.\nDefault: ter-v18b"
+		msg="\nNo font selected.\nDefault: ter-v20b"
 		dialog --backtitle "${apptitle}" --title "${txtconsolefont}" --msgbox "${msg}" 8 0
-		set_option "CONSOLEFONT" "ter-v18b"
+		set_option "CONSOLEFONT" "ter-v20b"
 		mainmenu "${txtdiskpartmenu}"
 	fi
 }
