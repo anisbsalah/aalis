@@ -21,6 +21,12 @@ cd aalis
 ./aalis.sh
 ```
 
+If you want to use `whiptail` for the menu boxes instead of the `dialog` utility, run:
+
+```bash
+./aalis-whiptail.sh
+```
+
 - Single command quicklaunch:
 
 ```bash
