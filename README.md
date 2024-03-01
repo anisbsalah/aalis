@@ -1,7 +1,10 @@
 # AALIS: Automated Arch Linux Installation Script
 
-This is a completely automated Arch Linux installation script. \
-It includes prompts to select your desired desktop environment, AUR helper, and whether to do a minimal or a fully functional Arch Linux installation containing a desktop environment, all the required packages (graphics drivers, network, bluetooth, audio, printers, etc.), along with some preferred applications and utilities I use on a daily basis.
+This is an Arch Linux automated installation script. \
+This script will guide you through the process of installing Arch Linux on your system. It provides a user-friendly menu using dialog boxes created with the dialog utility. This will allow you to easily navigate and select various settings and options to customize your Arch Linux installation. \
+Simply follow the prompts and make your selections to proceed with the automated installation process.
+
+Enjoy the power and flexibility of Arch Linux!
 
 ## Download Arch ISO
 
