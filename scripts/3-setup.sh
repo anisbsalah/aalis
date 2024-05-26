@@ -279,8 +279,8 @@ echo "
 ================================================================================
 "
 if [[ "$(whoami)" == root ]]; then
-	useradd -m -g users -G wheel,audio,video,network,storage,rfkill -s /bin/bash "${USERNAME}"
-	printf "* '%s' created and added to wheel,audio,video,network,storage,rfkill Groups.\n* Home directory created.\n* Default shell set to: /bin/bash\n" "${USERNAME}"
+	useradd -m -g users -G wheel,audio,video,network,storage,rfkill -s /bin/zsh "${USERNAME}"
+	printf "* '%s' created and added to wheel,audio,video,network,storage,rfkill Groups.\n* Home directory created.\n* Default shell set to: /bin/zsh\n" "${USERNAME}"
 
 	# Set User password
 	echo "${USERNAME}:${USER_PASSWORD}" | chpasswd
