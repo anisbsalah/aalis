@@ -82,21 +82,6 @@ systemctl enable NetworkManager.service
 
 echo "
 ================================================================================
- Initramfs
-================================================================================
-"
-# Initramfs
-if [[ ${root_filesystem} == btrfs ]]; then
-	sed -i 's/^MODULES=()/MODULES=(btrfs)/' /etc/mkinitcpio.conf
-fi
-sed -i 's/^BINARIES=()/BINARIES=(setfont)/' /etc/mkinitcpio.conf
-# sed -i 's/^\(HOOKS=["(]*base .*\) keymap consolefont \(.*\)$/\1 sd-vconsole \2/g' /etc/mkinitcpio.conf
-sed -i '/^HOOKS=/s/autodetect\( \|$\)/autodetect microcode\1/g' /etc/mkinitcpio.conf
-sed -i 's/^[#[:space:]]*COMPRESSION="zstd"/COMPRESSION="zstd"/' /etc/mkinitcpio.conf
-mkinitcpio -P
-
-echo "
-================================================================================
  Root password
 ================================================================================
 "
