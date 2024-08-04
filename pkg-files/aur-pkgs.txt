@@ -12,8 +12,6 @@ vscodium-bin
 xviewer
 # --------------------------------- # GNOME specific software
 # --------------------------------- # KDE specific software
-arc-kde-git
-arcolinux-sddm-simplicity
-arcolinux-sddm-sugar-candy
+arcolinux-arc-kde
 # --------------------------------- # XFCE specific software
 # --------------------------------- #
