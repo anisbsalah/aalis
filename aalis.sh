@@ -1531,20 +1531,22 @@ export DIALOGRC="dialog.archfi"
 load_strings
 welcome
 mainmenu
-if [[ ${desktop_env} == server ]]; then
+if [[ ${desktop_env,,} == server ]]; then
 	set_option "INSTALL_TYPE" "Minimal"
 	set_option "AUR_HELPER" "none"
 	set_option "FLATPAK" "false"
 fi
 rm dialog.archfi
 
+# ----------------------------------------------------------------------------------------------------
+
 source "${PROJECT_DIR}/setup.conf"
 (bash "${PROJECT_DIR}/scripts/1-pre-install.sh") |& tee 1-pre-install.log
 (bash "${PROJECT_DIR}/scripts/2-arch-install.sh") |& tee 2-arch-install.log
 (arch-chroot /mnt "${HOME}/aalis/scripts/3-setup.sh") |& tee 3-setup.log
-if [[ ${DESKTOP_ENV} != "server" ]]; then
+if [[ ${DESKTOP_ENV,,} != "server" ]]; then
 	(arch-chroot /mnt /usr/bin/runuser -u "${USERNAME}" -- bash "/home/${USERNAME}/aalis/scripts/4-user.sh") |& tee 4-user.log
-	if [[ ${INSTALL_TYPE} == Full ]]; then
+	if [[ ${INSTALL_TYPE,,} == full ]]; then
 		(arch-chroot /mnt /usr/bin/runuser -u "${USERNAME}" -- bash "/home/${USERNAME}/aalis/scripts/5-settings.sh") |& tee 5-settings.log
 	fi
 fi

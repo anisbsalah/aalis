@@ -126,9 +126,9 @@ function ranger-cd {
 bindkey -s "^\er" "ranger-cd\n"
 
 ### reporting tools - install when not installed
+# fastfetch
 # fetch
 # hfetch
-# neofetch
 # pfetch
 # screenfetch
 # sfetch

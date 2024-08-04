@@ -15,9 +15,9 @@ if [ -f ~/.bash_aliases ]; then
 fi
 
 ### reporting tools - install when not installed
+# fastfetch
 # fetch
 # hfetch
-# neofetch
 # pfetch
 # screenfetch
 # sfetch

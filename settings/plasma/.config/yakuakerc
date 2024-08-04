@@ -1,0 +1,8 @@
+[Appearance]
+Skin=arc-dark
+
+[Dialogs]
+FirstRun=false
+
+[Window]
+KeepAbove=false

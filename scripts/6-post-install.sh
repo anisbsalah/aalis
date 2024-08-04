@@ -59,8 +59,9 @@ echo "
  Xorg/Keyboard configuration
 ================================================================================
 "
-echo "> Set X11 keymap to: ${KEYMAP}"
 mkdir -p /etc/X11/xorg.conf.d
+
+echo "> Setting X11 keymap to: ${KEYMAP}..."
 tee "/etc/X11/xorg.conf.d/00-keyboard.conf" <<EOF
 # Written by systemd-localed(8), read by systemd-localed and Xorg. It's
 # probably wise not to edit this file manually. Use localectl(1) to
@@ -69,6 +70,17 @@ Section "InputClass"
         Identifier "system-keyboard"
         MatchIsKeyboard "on"
         Option "XkbLayout" "${KEYMAP}"
+EndSection
+EOF
+
+echo "> Setting X11 touchpad options..."
+tee "/etc/X11/xorg.conf.d/30-touchpad.conf" <<EOF
+Section "InputClass"
+    Identifier "AlpsPS/2 ALPS GlidePoint"
+    Driver "libinput"
+    MatchIsTouchpad "on"
+    Option "Tapping" "on"
+    Option "ScrollMethod" "edge"
 EndSection
 EOF
 
