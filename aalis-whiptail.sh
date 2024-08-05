@@ -123,7 +123,7 @@ load_strings() {
 	txtlocale="Locale"
 	txtselectlocales="Select the desired locales to generate:\n(Default: en_US)"
 	txtkeymap="Keymap"
-	txtselectkeyboard="Select your keyboard layout:\n(Default: us)"
+	txtselectkeyboard="Select your keyboard layout:\n(Default: fr)"
 	txtconsolefont="Consolefont"
 	txtselectvcfont="Select your desired consolefont:\n(Default: ter-v20b)"
 	txtdiskpartmenu="Disks & Partitions"
@@ -291,7 +291,7 @@ mainmenu() {
 default_values() {
 	set_option "TIMEZONE" "Africa/Tunis"
 	set_option "LOCALES" "(en_US)"
-	set_option "KEYMAP" "us"
+	set_option "KEYMAP" "fr"
 	set_option "CONSOLEFONT" "ter-v20b"
 }
 
@@ -389,9 +389,9 @@ set_keymap() {
 
 		set_option "KEYMAP" "${keymap}"
 	else
-		msg="No keymap selected.\nDefault: us"
+		msg="No keymap selected.\nDefault: fr"
 		whiptail --backtitle "${apptitle}" --title "${txtkeymap}" --msgbox "${msg}" 8 0
-		set_option "KEYMAP" "us"
+		set_option "KEYMAP" "fr"
 		mainmenu "${txtconsolefont}"
 	fi
 }
