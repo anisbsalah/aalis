@@ -258,7 +258,7 @@ EOF
 	# --------------------------------------------------
 
 	echo "[*] Installing Plasma dotfiles..."
-	# cp -rfv ~/aalis/settings/plasma/.config ~/
+	cp -rfv ~/aalis/settings/plasma/.config ~/
 	cp -rfv ~/aalis/settings/plasma/.local ~/
 	sudo cp -rfv ~/aalis/settings/plasma/usr /
 
