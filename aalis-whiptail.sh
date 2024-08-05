@@ -260,8 +260,11 @@ mainmenu() {
 			nextitem="${txtinstallarch}"
 			;;
 		"${txtinstallarch}")
-			install_arch
-			return 0
+			if install_arch; then
+				return 0
+			else
+				mainmenu "${txtinstallarch}"
+			fi
 			;;
 		"${txtreboot}")
 			reboot_pc
@@ -1503,7 +1506,7 @@ install_arch() {
 		clear
 		return 0
 	else
-		mainmenu "${txtinstallarch}"
+		return 1
 	fi
 }
 
