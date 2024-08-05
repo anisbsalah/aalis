@@ -79,11 +79,32 @@ if [[ ${DESKTOP_ENV,,} == kde ]]; then
 	SDDM_FONT="Noto Sans,10,-1,0,400,0,0,0,0,0,0,0,0,0,0,1"
 	SDDM_THEME_CONF="/usr/share/sddm/themes/breeze/theme.conf.user"
 	SDDM_BG="/usr/share/backgrounds/AbS-Wallpapers/sddm_bg.jpg"
-	sudo kwriteconfig6 --file "${SDDM_CONF}" --group "Theme" --key "Current" "${SDDM_THEME}"
-	sudo kwriteconfig6 --file "${SDDM_CONF}" --group "Theme" --key "CursorTheme" "${SDDM_CURSOR_THEME}"
-	sudo kwriteconfig6 --file "${SDDM_CONF}" --group "Theme" --key "Font" "${SDDM_FONT}"
-	sudo kwriteconfig6 --file "${SDDM_THEME_CONF}" --group "General" --key "background" "${SDDM_BG}"
-	sudo kwriteconfig6 --file "${SDDM_THEME_CONF}" --group "General" --key "type" image
+
+	sudo tee "${SDDM_CONF}" <<EOF
+[Autologin]
+Relogin=false
+Session=
+User=
+
+[General]
+HaltCommand=/usr/bin/systemctl poweroff
+RebootCommand=/usr/bin/systemctl reboot
+
+[Theme]
+Current=${SDDM_THEME}
+CursorTheme=${SDDM_CURSOR_THEME}
+Font=${SDDM_FONT}
+
+[Users]
+MaximumUid=60513
+MinimumUid=1000
+EOF
+
+	sudo tee "${SDDM_THEME_CONF}" <<EOF
+[General]
+background=${SDDM_BG}
+type=image
+EOF
 
 elif [[ ${DESKTOP_ENV,,} == cinnamon || ${DESKTOP_ENV,,} == xfce ]]; then
 
