@@ -73,6 +73,8 @@ Section "InputClass"
 EndSection
 EOF
 
+echo ""
+
 echo "> Setting X11 touchpad options..."
 tee "/etc/X11/xorg.conf.d/30-touchpad.conf" <<EOF
 Section "InputClass"
