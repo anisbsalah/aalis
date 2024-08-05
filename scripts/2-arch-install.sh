@@ -74,7 +74,7 @@ if [[ ${SWAPFILE} == true ]]; then
 ================================================================================
 "
 	if [[ ${root_filesystem} == btrfs ]]; then
-		btrfs root_filesystem mkswapfile --size "${SWAPFILE_SIZE}M" --uuid clear /mnt/swap/swapfile
+		btrfs filesystem mkswapfile --size "${SWAPFILE_SIZE}M" --uuid clear /mnt/swap/swapfile
 		swapon /mnt/swap/swapfile
 		echo "# Swap
 /swap/swapfile    none    swap    defaults  0   0" >>/mnt/etc/fstab
