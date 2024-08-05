@@ -119,13 +119,13 @@ load_strings() {
 	txtwarning="Warning!"
 	txterror="ERROR!"
 	txttimezone="Timezone"
-	txtselectzone="Select your timezone:"
+	txtselectzone="Select your timezone:\n(Default: Africa/Tunis)"
 	txtlocale="Locale"
 	txtselectlocales="Select the desired locales to generate:\n(Default: en_US)"
 	txtkeymap="Keymap"
-	txtselectkeyboard="Select your keyboard layout:"
+	txtselectkeyboard="Select your keyboard layout:\n(Default: us)"
 	txtconsolefont="Consolefont"
-	txtselectvcfont="Select your desired consolefont:"
+	txtselectvcfont="Select your desired consolefont:\n(Default: ter-v20b)"
 	txtdiskpartmenu="Disks & Partitions"
 	txtbootmode="Boot Mode"
 	txtbootmodemsg="\nThe system is booted in %1 mode."
@@ -282,6 +282,15 @@ mainmenu() {
 			mainmenu "${nextitem}"
 		fi
 	fi
+}
+
+# ----------------------------------------------------------------------------------------------------
+
+default_values() {
+	set_option "TIMEZONE" "Africa/Tunis"
+	set_option "LOCALES" "(en_US)"
+	set_option "KEYMAP" "us"
+	set_option "CONSOLEFONT" "ter-v20b"
 }
 
 # ----------------------------------------------------------------------------------------------------
@@ -1533,6 +1542,7 @@ EOF
 export DIALOGRC="dialog.archfi"
 load_strings
 welcome
+default_values
 mainmenu
 if [[ ${desktop_env,,} == server ]]; then
 	set_option "INSTALL_TYPE" "Minimal"
