@@ -146,6 +146,7 @@ DESKTOPTHEME="Arc-Dark"
 GTK_THEME="Arc-Dark"
 ICON_THEME="Papirus-Dark"
 CURSOR_THEME="Breeze_Light"
+CURSOR_SIZE="24"
 SOUND_THEME="ocean"
 
 if [[ ${DESKTOP_ENV,,} == kde ]]; then
@@ -171,19 +172,45 @@ if [[ ${DESKTOP_ENV,,} == kde ]]; then
 	# -------------------------------------------------
 
 	echo "[*] Setting colors and themes..."
-	plasma-apply-lookandfeel -a "${LOOKANDFEEL}" # lookandfeeltool -a "${LOOKANDFEEL}"
+
+	plasma-apply-lookandfeel -a "${LOOKANDFEEL}"      # lookandfeeltool -a "${LOOKANDFEEL}"
+	sudo plasma-apply-lookandfeel -a "${LOOKANDFEEL}" # sudo lookandfeeltool -a "${LOOKANDFEEL}"
+
 	plasma-apply-colorscheme "${COLORSCHEME}"
+	sudo plasma-apply-colorscheme "${COLORSCHEME}"
+
 	kwriteconfig6 --file kdeglobals --group "KDE" --key "widgetStyle" "kvantum"
+	sudo kwriteconfig6 --file kdeglobals --group "KDE" --key "widgetStyle" "kvantum"
+
 	kvantummanager --set "${KVANTUM_THEME}"
+	sudo kvantummanager --set "${KVANTUM_THEME}"
+
 	qdbus6 org.kde.GtkConfig /GtkConfig org.kde.GtkConfig.setGtkTheme "${GTK_THEME}"
+	sudo qdbus6 org.kde.GtkConfig /GtkConfig org.kde.GtkConfig.setGtkTheme "${GTK_THEME}"
+
 	plasma-apply-desktoptheme "${DESKTOPTHEME}"
+	sudo plasma-apply-desktoptheme "${DESKTOPTHEME}"
+
 	kwriteconfig6 --file kwinrc --group "org.kde.kdecoration2" --key "library" "org.kde.kwin.aurorae"
+	sudo kwriteconfig6 --file kwinrc --group "org.kde.kdecoration2" --key "library" "org.kde.kwin.aurorae"
+
 	kwriteconfig6 --file kwinrc --group "org.kde.kdecoration2" --key "theme" "__aurorae__svg__Arc-Dark"
+	sudo kwriteconfig6 --file kwinrc --group "org.kde.kdecoration2" --key "theme" "__aurorae__svg__Arc-Dark"
+
 	kwriteconfig6 --file kdeglobals --group "Icons" --key "Theme" "${ICON_THEME}"
+	sudo kwriteconfig6 --file kdeglobals --group "Icons" --key "Theme" "${ICON_THEME}"
+
 	kwriteconfig6 --file kdeglobals --group "Sounds" --key "Theme" "${SOUND_THEME}"
+	sudo kwriteconfig6 --file kdeglobals --group "Sounds" --key "Theme" "${SOUND_THEME}"
+
 	plasma-apply-cursortheme "${CURSOR_THEME}"
+	sudo plasma-apply-cursortheme "${CURSOR_THEME}"
+
 	kwriteconfig6 --file ksplashrc --group "KSplash" --key "Engine" "none"
+	sudo kwriteconfig6 --file ksplashrc --group "KSplash" --key "Engine" "none"
+
 	kwriteconfig6 --file ksplashrc --group "KSplash" --key "Theme" "None"
+	sudo kwriteconfig6 --file ksplashrc --group "KSplash" --key "Theme" "None"
 
 	# -------------------------------------------------
 
@@ -199,13 +226,13 @@ if [[ ${DESKTOP_ENV,,} == kde ]]; then
 			cat >"${gtk_settings}" <<EOF
 [Settings]
 gtk-application-prefer-dark-theme=true
-gtk-theme-name=Arc-Dark
-gtk-icon-theme-name=Papirus-Dark
-gtk-cursor-theme-name=Breeze_Light
-gtk-cursor-theme-size=24
+gtk-theme-name=${GTK_THEME}
+gtk-icon-theme-name=${ICON_THEME}
+gtk-cursor-theme-name=${CURSOR_THEME}
+gtk-cursor-theme-size=${CURSOR_SIZE}
 gtk-font-name=Noto Sans,  10
 gtk-modules=colorreload-gtk-module
-gtk-sound-theme-name=ocean
+gtk-sound-theme-name=${SOUND_THEME}
 EOF
 		done
 	}
@@ -279,9 +306,9 @@ EOF
 	# --------------------------------------------------
 
 	echo "[*] Installing Plasma dotfiles..."
-	cp -rfv ~/aalis/settings/plasma/.config ~/
-	cp -rfv ~/aalis/settings/plasma/.local ~/
-	sudo cp -rfv ~/aalis/settings/plasma/usr /
+	cp -rf ~/aalis/settings/plasma/.config ~/
+	cp -rf ~/aalis/settings/plasma/.local ~/
+	sudo cp -rf ~/aalis/settings/plasma/usr /
 
 	# --------------------------------------------------
 
