@@ -260,6 +260,7 @@ mainmenu() {
 			;;
 		"${txtinstallarch}")
 			if install_arch; then
+				clear
 				return 0
 			else
 				mainmenu "${txtinstallarch}"
