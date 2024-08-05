@@ -1516,7 +1516,6 @@ install_arch() {
 	if (dialog --backtitle "${apptitle}" --title "${txtinstallarch}" \
 		--defaultno --yesno "\nStart Arch Linux installation?" 7 34); then
 
-		clear
 		return 0
 	else
 		return 1

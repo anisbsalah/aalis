@@ -1512,7 +1512,6 @@ install_arch() {
 	if (whiptail --backtitle "${apptitle}" --title "${txtinstallarch}" \
 		--defaultno --yesno "Start Arch Linux installation?" 7 34); then
 
-		clear
 		return 0
 	else
 		return 1
