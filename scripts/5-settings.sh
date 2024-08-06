@@ -151,6 +151,13 @@ SOUND_THEME="ocean"
 
 if [[ ${DESKTOP_ENV,,} == kde ]]; then
 
+	# --------------------------------------------------
+
+	echo "[*] Installing Plasma dotfiles..."
+	cp -rf ~/aalis/settings/plasma/.config ~/
+	cp -rf ~/aalis/settings/plasma/.local ~/
+	sudo cp -rf ~/aalis/settings/plasma/usr /
+
 	# -------------------------------------------------
 
 	echo "[*] Setting system fonts..."
@@ -167,45 +174,55 @@ if [[ ${DESKTOP_ENV,,} == kde ]]; then
 	# -------------------------------------------------
 
 	echo "[*] Setting wallpaper image..."
-	plasma-apply-wallpaperimage "${DESKTOP_BG}"
+	kwriteconfig6 --file plasmarc --group "Wallpapers" --key "usersWallpapers" "${DESKTOP_BG}"
+	kwriteconfig6 --file "plasma-org.kde.plasma.desktop-appletsrc" \
+		--group "Containments" \
+		--group "1" \
+		--group "Wallpaper" \
+		--group "org.kde.image" \
+		--group "General" \
+		--key "Image" "file://${DESKTOP_BG}"
 
 	# -------------------------------------------------
 
 	echo "[*] Setting colors and themes..."
 
-	plasma-apply-lookandfeel -a "${LOOKANDFEEL}"      # lookandfeeltool -a "${LOOKANDFEEL}"
-	sudo plasma-apply-lookandfeel -a "${LOOKANDFEEL}" # sudo lookandfeeltool -a "${LOOKANDFEEL}"
+	# Global theme
+	kwriteconfig6 --file kdeglobals --group "KDE" --key "LookAndFeelPackage" "${LOOKANDFEEL}"
+	sudo kwriteconfig6 --file kdeglobals --group "KDE" --key "LookAndFeelPackage" "${LOOKANDFEEL}"
 
-	plasma-apply-colorscheme "${COLORSCHEME}"
-	sudo plasma-apply-colorscheme "${COLORSCHEME}"
+	# Colors
+	kwriteconfig6 --file kdeglobals --group "General" --key "ColorScheme" "${COLORSCHEME}"
+	sudo kwriteconfig6 --file kdeglobals --group "General" --key "ColorScheme" "${COLORSCHEME}"
 
+	# Application Style
 	kwriteconfig6 --file kdeglobals --group "KDE" --key "widgetStyle" "kvantum"
 	sudo kwriteconfig6 --file kdeglobals --group "KDE" --key "widgetStyle" "kvantum"
 
-	kvantummanager --set "${KVANTUM_THEME}"
-	sudo kvantummanager --set "${KVANTUM_THEME}"
+	# Plasma Style
+	kwriteconfig6 --file plasmarc --group "Theme" --key "name" "${DESKTOPTHEME}"
+	sudo kwriteconfig6 --file plasmarc --group "Theme" --key "name" "${DESKTOPTHEME}"
 
-	qdbus6 org.kde.GtkConfig /GtkConfig org.kde.GtkConfig.setGtkTheme "${GTK_THEME}"
-	sudo qdbus6 org.kde.GtkConfig /GtkConfig org.kde.GtkConfig.setGtkTheme "${GTK_THEME}"
-
-	plasma-apply-desktoptheme "${DESKTOPTHEME}"
-	sudo plasma-apply-desktoptheme "${DESKTOPTHEME}"
-
+	# Window Decorations
 	kwriteconfig6 --file kwinrc --group "org.kde.kdecoration2" --key "library" "org.kde.kwin.aurorae"
 	sudo kwriteconfig6 --file kwinrc --group "org.kde.kdecoration2" --key "library" "org.kde.kwin.aurorae"
 
 	kwriteconfig6 --file kwinrc --group "org.kde.kdecoration2" --key "theme" "__aurorae__svg__Arc-Dark"
 	sudo kwriteconfig6 --file kwinrc --group "org.kde.kdecoration2" --key "theme" "__aurorae__svg__Arc-Dark"
 
+	# Icons
 	kwriteconfig6 --file kdeglobals --group "Icons" --key "Theme" "${ICON_THEME}"
 	sudo kwriteconfig6 --file kdeglobals --group "Icons" --key "Theme" "${ICON_THEME}"
 
+	# System Sounds
 	kwriteconfig6 --file kdeglobals --group "Sounds" --key "Theme" "${SOUND_THEME}"
 	sudo kwriteconfig6 --file kdeglobals --group "Sounds" --key "Theme" "${SOUND_THEME}"
 
-	plasma-apply-cursortheme "${CURSOR_THEME}"
-	sudo plasma-apply-cursortheme "${CURSOR_THEME}"
+	# Cursors
+	kwriteconfig6 --file kcminputrc --group "Mouse" --key "cursorTheme" "${CURSOR_THEME}"
+	sudo kwriteconfig6 --file kcminputrc --group "Mouse" --key "cursorTheme" "${CURSOR_THEME}"
 
+	# Splash Screen
 	kwriteconfig6 --file ksplashrc --group "KSplash" --key "Engine" "none"
 	sudo kwriteconfig6 --file ksplashrc --group "KSplash" --key "Engine" "none"
 
@@ -306,7 +323,42 @@ EOF
 		--group "5" \
 		--group "Configuration" \
 		--group "General" \
-		--key "launchers" "applications:systemsettings.desktop,applications:Alacritty.desktop,preferred://filemanager,applications:brave-browser.desktop,applications:org.gnome.Meld.desktop"
+		--key "launchers" "applications:systemsettings.desktop,applications:Alacritty.desktop,applications:org.kde.dolphin.desktop,applications:brave-browser.desktop,applications:org.gnome.Meld.desktop"
+
+	# Applications Launcher
+	kwriteconfig6 --file plasma-org.kde.plasma.desktop-appletsrc \
+		--group "Containments" \
+		--group "2" \
+		--group "Applets" \
+		--group "3" \
+		--group "Configuration" \
+		--key "popupHeight" "540"
+
+	kwriteconfig6 --file plasma-org.kde.plasma.desktop-appletsrc \
+		--group "Containments" \
+		--group "2" \
+		--group "Applets" \
+		--group "3" \
+		--group "Configuration" \
+		--key "popupWidth" "670"
+
+	kwriteconfig6 --file plasma-org.kde.plasma.desktop-appletsrc \
+		--group "Containments" \
+		--group "2" \
+		--group "Applets" \
+		--group "3" \
+		--group "Configuration" \
+		--group "General" \
+		--key "applicationsDisplay" "0"
+
+	kwriteconfig6 --file plasma-org.kde.plasma.desktop-appletsrc \
+		--group "Containments" \
+		--group "2" \
+		--group "Applets" \
+		--group "3" \
+		--group "Configuration" \
+		--group "General" \
+		--key "icon" "start-here-archlinux"
 
 	# -------------------------------------------------
 
@@ -319,13 +371,6 @@ EOF
 	kwriteconfig6 --file konsolerc --group "General" --key "ConfigVersion" 1
 	kwriteconfig6 --file konsolerc --group "MainWindow" --key "MenuBar" Disabled
 	kwriteconfig6 --file konsolerc --group "MainWindow" --key "ToolBarsMovable" Disabled
-
-	# --------------------------------------------------
-
-	echo "[*] Installing Plasma dotfiles..."
-	cp -rf ~/aalis/settings/plasma/.config ~/
-	cp -rf ~/aalis/settings/plasma/.local ~/
-	sudo cp -rf ~/aalis/settings/plasma/usr /
 
 	# --------------------------------------------------
 
