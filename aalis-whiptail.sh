@@ -16,7 +16,10 @@ timedatectl set-ntp true
 
 clear
 
-echo "
+# ----------------------------------------------------------------------------------------------------
+
+function logo_arch() {
+	echo "
 ================================================================================
     █████╗ ██████╗  ██████╗██╗  ██╗    ██╗     ██╗███╗   ██╗██╗   ██╗██╗  ██╗
    ██╔══██╗██╔══██╗██╔════╝██║  ██║    ██║     ██║████╗  ██║██║   ██║╚██╗██╔╝
@@ -28,6 +31,9 @@ echo "
                    Automated Arch Linux Installation Script
 ================================================================================
 "
+}
+
+# ----------------------------------------------------------------------------------------------------
 
 function install_prerequisites() {
 	echo "
@@ -204,6 +210,15 @@ Let's begin the installation process and set up your Arch Linux system. Enjoy th
 
 # ----------------------------------------------------------------------------------------------------
 
+function default_values() {
+	set_option "TIMEZONE" "Africa/Tunis"
+	set_option "LOCALES" "(en_US)"
+	set_option "KEYMAP" "fr"
+	set_option "CONSOLEFONT" "ter-v20b"
+}
+
+# ----------------------------------------------------------------------------------------------------
+
 function mainmenu() {
 	if [[ ${1} == "" ]]; then
 		nextitem="."
@@ -263,12 +278,8 @@ function mainmenu() {
 			nextitem="${txtinstallarch}"
 			;;
 		"${txtinstallarch}")
-			if install_arch; then
-				clear
-				return 0
-			else
-				mainmenu "${txtinstallarch}"
-			fi
+			install_arch
+			nextitem="${txtreboot}"
 			;;
 		"${txtreboot}")
 			reboot_pc
@@ -278,34 +289,29 @@ function mainmenu() {
 		esac
 		mainmenu "${nextitem}"
 	else
-		if (whiptail --backtitle "${apptitle}" --title "${txtexit}" \
-			--defaultno --yesno "${txtquit}" 7 34); then
-
-			clear
-			exit 0
-		else
-			mainmenu "${nextitem}"
-		fi
+		quit_script
 	fi
 }
 
 # ----------------------------------------------------------------------------------------------------
 
-function default_values() {
-	set_option "TIMEZONE" "Africa/Tunis"
-	set_option "LOCALES" "(en_US)"
-	set_option "KEYMAP" "fr"
-	set_option "CONSOLEFONT" "ter-v20b"
-}
+function quit_script() {
+	if (whiptail --backtitle "${apptitle}" --title "${txtexit}" \
+		--defaultno --yesno "${txtquit}" 7 34); then
 
-# ----------------------------------------------------------------------------------------------------
+		clear
+		exit 0
+	else
+		mainmenu "${nextitem}"
+	fi
+}
 
 function reboot_pc() {
 	if (whiptail --backtitle "${apptitle}" --title "${txtreboot}" \
 		--defaultno --yesno "Do you want to reboot now?" 7 30); then
 
-		umount -R /mnt
 		clear
+		umount -R /mnt
 		reboot
 	fi
 }
@@ -1516,44 +1522,43 @@ function install_arch() {
 	if (whiptail --backtitle "${apptitle}" --title "${txtinstallarch}" \
 		--defaultno --yesno "Start Arch Linux installation?" 7 34); then
 
-		return 0
+		run_installation_process
+		end_of_installation
+
 	else
-		return 1
+		mainmenu "${txtinstallarch}"
 	fi
 }
 
-# ----------------------------------------------------------------------------------------------------
+function run_installation_process() {
 
-background_checks
-install_prerequisites
-EDITOR=nano
-load_strings
-welcome
-default_values
-mainmenu
-
-if [[ ${desktop_env,,} == server ]]; then
-	set_option "INSTALL_TYPE" "Minimal"
-	set_option "AUR_HELPER" "none"
-	set_option "FLATPAK" "false"
-fi
-
-# ----------------------------------------------------------------------------------------------------
-
-source "${PROJECT_DIR}/setup.conf"
-(bash "${PROJECT_DIR}/scripts/1-pre-install.sh") |& tee 1-pre-install.log
-(bash "${PROJECT_DIR}/scripts/2-arch-install.sh") |& tee 2-arch-install.log
-(arch-chroot /mnt "${HOME}/aalis/scripts/3-setup.sh") |& tee 3-setup.log
-if [[ ${DESKTOP_ENV,,} != "server" ]]; then
-	(arch-chroot /mnt /usr/bin/runuser -u "${USERNAME}" -- bash "/home/${USERNAME}/aalis/scripts/4-user.sh") |& tee 4-user.log
-	if [[ ${INSTALL_TYPE,,} == full ]]; then
-		(arch-chroot /mnt /usr/bin/runuser -u "${USERNAME}" -- bash "/home/${USERNAME}/aalis/scripts/5-settings.sh") |& tee 5-settings.log
+	if [[ ${desktop_env,,} == server ]]; then
+		set_option "INSTALL_TYPE" "Minimal"
+		set_option "AUR_HELPER" "none"
+		set_option "FLATPAK" "false"
 	fi
-fi
-(arch-chroot /mnt bash "${HOME}/aalis/scripts/6-post-install.sh") |& tee 6-post-install.log
-cp -v ./*.log "/mnt/home/${USERNAME}/"
 
-echo "
+	clear
+
+	source "${PROJECT_DIR}/setup.conf"
+	(bash "${PROJECT_DIR}/scripts/1-pre-install.sh") |& tee 1-pre-install.log
+	(bash "${PROJECT_DIR}/scripts/2-arch-install.sh") |& tee 2-arch-install.log
+	(arch-chroot /mnt "${HOME}/aalis/scripts/3-setup.sh") |& tee 3-setup.log
+	if [[ ${DESKTOP_ENV,,} != "server" ]]; then
+		(arch-chroot /mnt /usr/bin/runuser -u "${USERNAME}" -- bash "/home/${USERNAME}/aalis/scripts/4-user.sh") |& tee 4-user.log
+		if [[ ${INSTALL_TYPE,,} == full ]]; then
+			(arch-chroot /mnt /usr/bin/runuser -u "${USERNAME}" -- bash "/home/${USERNAME}/aalis/scripts/5-settings.sh") |& tee 5-settings.log
+		fi
+	fi
+	(arch-chroot /mnt bash "${HOME}/aalis/scripts/6-post-install.sh") |& tee 6-post-install.log
+	cp -v ./*.log "/mnt/home/${USERNAME}/"
+}
+
+function end_of_installation() {
+
+	clear
+
+	echo "
 ================================================================================
     █████╗ ██████╗  ██████╗██╗  ██╗    ██╗     ██╗███╗   ██╗██╗   ██╗██╗  ██╗
    ██╔══██╗██╔══██╗██╔════╝██║  ██║    ██║     ██║████╗  ██║██║   ██║╚██╗██╔╝
@@ -1569,3 +1574,41 @@ echo "
                   Type 'exit', 'umount -R /mnt' and 'reboot'
 ================================================================================
 "
+	printf "::What to do next? (select an option)\n\n"
+
+	local options=(
+		"Back to script"
+		"Reboot"
+		"Quit")
+
+	local option
+	select option in "${options[@]}"; do
+		case "${option}" in
+		"Back to script")
+			mainmenu
+			;;
+		"Reboot")
+			umount -R /mnt
+			reboot
+			;;
+		"Quit")
+			clear
+			exit 0
+			;;
+		*) ;;
+		esac
+	done
+}
+
+# ----------------------------------------------------------------------------------------------------
+
+logo_arch
+background_checks
+install_prerequisites
+EDITOR=nano
+load_strings
+welcome
+default_values
+mainmenu
+
+# ----------------------------------------------------------------------------------------------------
