@@ -214,13 +214,13 @@ if [[ ${DESKTOP_ENV,,} == kde ]]; then
 	kwriteconfig6 --file kdeglobals --group "Icons" --key "Theme" "${ICON_THEME}"
 	sudo kwriteconfig6 --file kdeglobals --group "Icons" --key "Theme" "${ICON_THEME}"
 
-	# System Sounds
-	kwriteconfig6 --file kdeglobals --group "Sounds" --key "Theme" "${SOUND_THEME}"
-	sudo kwriteconfig6 --file kdeglobals --group "Sounds" --key "Theme" "${SOUND_THEME}"
-
 	# Cursors
 	kwriteconfig6 --file kcminputrc --group "Mouse" --key "cursorTheme" "${CURSOR_THEME}"
 	sudo kwriteconfig6 --file kcminputrc --group "Mouse" --key "cursorTheme" "${CURSOR_THEME}"
+
+	# System Sounds
+	kwriteconfig6 --file kdeglobals --group "Sounds" --key "Theme" "${SOUND_THEME}"
+	sudo kwriteconfig6 --file kdeglobals --group "Sounds" --key "Theme" "${SOUND_THEME}"
 
 	# Splash Screen
 	kwriteconfig6 --file ksplashrc --group "KSplash" --key "Engine" "none"
