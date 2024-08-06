@@ -184,6 +184,11 @@ echo "
 create_subvolumes() {
 	echo "[*] Creating btrfs subvolumes..."
 	for ((i = 0; i < ${#btrfs_subvolumes[@]}; i++)); do
+
+		if [[ ${SWAPFILE} != true ]] && [[ ${btrfs_subvolumes[i]} == "@swap" && ${btrfs_subvolumes_mountpoints[i]} == "/swap" ]]; then
+			continue
+		fi
+
 		btrfs subvolume create "/mnt/${btrfs_subvolumes[i]}"
 	done
 
@@ -195,6 +200,10 @@ create_subvolumes() {
 mount_subvolumes() {
 	echo "[*] Mounting the subvolumes..."
 	for ((i = 0; i < ${#btrfs_subvolumes[@]}; i++)); do
+
+		if [[ ${SWAPFILE} != true ]] && [[ ${btrfs_subvolumes[i]} == "@swap" && ${btrfs_subvolumes_mountpoints[i]} == "/swap" ]]; then
+			continue
+		fi
 
 		mkdir -p "/mnt${btrfs_subvolumes_mountpoints[i]}"
 		mount -o "${BTRFS_MOUNT_OPTIONS},subvol=${btrfs_subvolumes[i]}" "${root_partition}" "/mnt${btrfs_subvolumes_mountpoints[i]}"
