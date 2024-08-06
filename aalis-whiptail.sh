@@ -28,21 +28,24 @@ echo "
                    Automated Arch Linux Installation Script
 ================================================================================
 "
-echo "
+
+function install_prerequisites() {
+	echo "
 ================================================================================
  Installing prerequisites
 ================================================================================
 "
-sed -i 's/^[#[:space:]]*ParallelDownloads.*/ParallelDownloads = 5/' /etc/pacman.conf
-sed -i 's/^[#[:space:]]*Color/Color\nILoveCandy/' /etc/pacman.conf
+	sed -i 's/^[#[:space:]]*ParallelDownloads.*/ParallelDownloads = 5/' /etc/pacman.conf
+	sed -i 's/^[#[:space:]]*Color/Color\nILoveCandy/' /etc/pacman.conf
 
-pacman -Sy
-pacman -S --noconfirm archlinux-keyring # Update keyrings to latest to prevent packages failing to install
-pacman -S --noconfirm --needed arch-install-scripts glibc
-pacman -S --noconfirm --needed gptfdisk btrfs-progs
-pacman -S --noconfirm --needed curl libnewt reflector rsync wget
+	pacman -Sy
+	pacman -S --noconfirm archlinux-keyring # Update keyrings to latest to prevent packages failing to install
+	pacman -S --noconfirm --needed arch-install-scripts glibc
+	pacman -S --noconfirm --needed gptfdisk btrfs-progs
+	pacman -S --noconfirm --needed curl libnewt reflector rsync wget
 
-clear
+	clear
+}
 
 # ----------------------------------------------------------------------------------------------------
 
@@ -53,14 +56,14 @@ fi
 
 # ----------------------------------------------------------------------------------------------------
 
-root_check() {
+function root_check() {
 	if [[ "$(id -u)" != "0" ]]; then
 		echo "ERROR! This script must be run under the 'root' user."
 		exit 0
 	fi
 }
 
-docker_check() {
+function docker_check() {
 	if awk -F/ '$2 == "docker"' /proc/self/cgroup | read -r; then
 		echo "ERROR! Docker container is not supported (at the moment)"
 		exit 0
@@ -70,14 +73,14 @@ docker_check() {
 	fi
 }
 
-arch_check() {
+function arch_check() {
 	if [[ ! -e /etc/arch-release ]]; then
 		echo "ERROR! This script must be run in Arch Linux."
 		exit 0
 	fi
 }
 
-pacman_check() {
+function pacman_check() {
 	if [[ -f /var/lib/pacman/db.lck ]]; then
 		echo "ERROR! Pacman is blocked."
 		echo "If not running, remove: /var/lib/pacman/db.lck"
@@ -85,7 +88,7 @@ pacman_check() {
 	fi
 }
 
-background_checks() {
+function background_checks() {
 	root_check
 	arch_check
 	pacman_check
@@ -94,14 +97,14 @@ background_checks() {
 
 # ----------------------------------------------------------------------------------------------------
 
-set_option() {
+function set_option() {
 	if grep -Eq "^${1}.*" "${CONFIG_FILE}"; then # check if option exists
 		sed -i -e "/^${1}.*/d" "${CONFIG_FILE}"     # delete option if exists
 	fi
 	echo "${1}=${2}" >>"${CONFIG_FILE}" # add option
 }
 
-del_option() {
+function del_option() {
 	if grep -Eq ".*${1}.*" "${CONFIG_FILE}"; then # check if option exists
 		sed -i -e "/.*${1}.*/d" "${CONFIG_FILE}"     # delete option if exists
 	fi
@@ -109,7 +112,7 @@ del_option() {
 
 # ----------------------------------------------------------------------------------------------------
 
-load_strings() {
+function load_strings() {
 	apptitle="Arch Linux Install Script"
 	txtwelcome="Welcome"
 	txtmainmenu="Main menu"
@@ -183,7 +186,7 @@ load_strings() {
 
 # ----------------------------------------------------------------------------------------------------
 
-welcome() {
+function welcome() {
 	message="Welcome to the Arch Linux Installation Script!
 
 This script will guide you through the process of installing Arch Linux on your system. It provides a user-friendly menu where you can select various settings and options based on your preferences.
@@ -201,7 +204,7 @@ Let's begin the installation process and set up your Arch Linux system. Enjoy th
 
 # ----------------------------------------------------------------------------------------------------
 
-mainmenu() {
+function mainmenu() {
 	if [[ ${1} == "" ]]; then
 		nextitem="."
 	else
@@ -288,7 +291,7 @@ mainmenu() {
 
 # ----------------------------------------------------------------------------------------------------
 
-default_values() {
+function default_values() {
 	set_option "TIMEZONE" "Africa/Tunis"
 	set_option "LOCALES" "(en_US)"
 	set_option "KEYMAP" "fr"
@@ -297,7 +300,7 @@ default_values() {
 
 # ----------------------------------------------------------------------------------------------------
 
-reboot_pc() {
+function reboot_pc() {
 	if (whiptail --backtitle "${apptitle}" --title "${txtreboot}" \
 		--defaultno --yesno "Do you want to reboot now?" 7 30); then
 
@@ -309,7 +312,7 @@ reboot_pc() {
 
 # ----------------------------------------------------------------------------------------------------
 
-detect_timezone() {
+function detect_timezone() {
 	server='http://geoip.ubuntu.com/lookup'
 	if ping -c3 "${server}" 2>/dev/null; then
 		TIMEZONE=$(wget -O - -q http://geoip.ubuntu.com/lookup | sed -n -e 's/.*<TimeZone>\(.*\)<\/TimeZone>.*/\1/p')
@@ -321,7 +324,7 @@ detect_timezone() {
 	TIMEZONE=${TIMEZONE:='Africa/Tunis'}
 }
 
-set_timezone() {
+function set_timezone() {
 	detect_timezone
 	timezones=$(timedatectl list-timezones)
 	options=()
@@ -345,7 +348,7 @@ set_timezone() {
 
 # ----------------------------------------------------------------------------------------------------
 
-set_locale() {
+function set_locale() {
 	locales=$(ls /usr/share/i18n/locales)
 	options=()
 	for loc in ${locales}; do
@@ -371,7 +374,7 @@ set_locale() {
 
 # ----------------------------------------------------------------------------------------------------
 
-set_keymap() {
+function set_keymap() {
 	keymaps=$(localectl list-keymaps)
 	options=()
 	for item in ${keymaps}; do
@@ -398,7 +401,7 @@ set_keymap() {
 
 # ----------------------------------------------------------------------------------------------------
 
-set_consolefont() {
+function set_consolefont() {
 	fonts=$(find /usr/share/kbd/consolefonts/ -name "*.psfu.gz" -o -name "*.psf.gz" -printf "%f\n")
 	options=()
 	for item in ${fonts}; do
@@ -420,7 +423,7 @@ set_consolefont() {
 
 # ----------------------------------------------------------------------------------------------------
 
-boot_mode() {
+function boot_mode() {
 	if [[ ! -d "/sys/firmware/efi" ]]; then
 		whiptail --backtitle "${apptitle}" --title "${txtbootmode}" \
 			--msgbox "${txtbootmodemsg//%1/BIOS}" 7 38
@@ -436,7 +439,7 @@ boot_mode() {
 	fi
 }
 
-diskpartmenu() {
+function diskpartmenu() {
 	if [[ ${1} == "" ]]; then
 		nextitem="."
 	else
@@ -484,7 +487,7 @@ diskpartmenu() {
 	fi
 }
 
-select_disk() {
+function select_disk() {
 	disks=$(lsblk -d -p -n -l -o NAME,SIZE -e 7,11)
 	options=()
 	IFS_ORIG=${IFS}
@@ -520,7 +523,7 @@ select_disk() {
 	return 0
 }
 
-confirm_data_wipe() {
+function confirm_data_wipe() {
 	if (whiptail --backtitle "${apptitle}" --title "${txtwarning}" \
 		--defaultno --yesno "${txtconfirmwipedata//%1/${DISK}}" 8 45); then
 
@@ -530,7 +533,7 @@ confirm_data_wipe() {
 	fi
 }
 
-check_disk_selection() {
+function check_disk_selection() {
 	if [[ -n ${DISK} ]]; then
 		return 0
 	else
@@ -538,7 +541,7 @@ check_disk_selection() {
 	fi
 }
 
-confirm_selected_disk() {
+function confirm_selected_disk() {
 	if check_disk_selection; then
 		if (whiptail --backtitle "${apptitle}" --title "${txtconfirm}" \
 			--defaultno --yesno "${txtconfirmselecteddevice//%1/${DISK}}" 8 45); then
@@ -557,7 +560,7 @@ confirm_selected_disk() {
 	fi
 }
 
-delete_part_entries() {
+function delete_part_entries() {
 	del_option "partition"
 	del_option "SWAP_PARTITION"
 	del_option "mountpoint"
@@ -567,7 +570,7 @@ delete_part_entries() {
 	fs_pkgs=""
 }
 
-new_partition_table_mbr_or_gpt() {
+function new_partition_table_mbr_or_gpt() {
 	if [[ ! -d "/sys/firmware/efi" ]]; then
 		message="The system is booted in BIOS mode."
 		message+="\nDo you want to create a GPT or MBR partition table?"
@@ -589,7 +592,7 @@ new_partition_table_mbr_or_gpt() {
 	fi
 }
 
-partition_table() {
+function partition_table() {
 	if [[ ${1} == "" ]]; then
 		nextitem="."
 	else
@@ -638,7 +641,7 @@ partition_table() {
 	fi
 }
 
-autopartitiontable() {
+function autopartitiontable() {
 	new_partition_table_mbr_or_gpt
 	options=()
 	options+=("${txtautoparts} (With Swap)" "")
@@ -676,7 +679,7 @@ autopartitiontable() {
 	fi
 }
 
-set_swap_size() {
+function set_swap_size() {
 	ram=$(free -m -t | awk 'NR == 2 {print $2}')
 	result=$((ram < 4096 ? ram : 4096))
 	result=$((result + ((ram - 4096 > 0 ? ram - 4096 : 0) / 2)))
@@ -689,7 +692,7 @@ set_swap_size() {
 	set_option "SWAP_SIZE" "${SWAP_SIZE}"
 }
 
-manualpartitiontable() {
+function manualpartitiontable() {
 	options=()
 	options+=("${txtmanualparts} (cfdisk)" "")
 	options+=("${txtmanualparts} (cgdisk)" "")
@@ -754,7 +757,7 @@ manualpartitiontable() {
 	fi
 }
 
-delete_partition_table() {
+function delete_partition_table() {
 	if (whiptail --backtitle "${apptitle}" --title "${txtconfirm}" \
 		--defaultno --yesno "${txtdeletepartitiontable}" 8 45); then
 		wipefs -a -f "${DISK}" &>/dev/null
@@ -764,7 +767,7 @@ delete_partition_table() {
 	fi
 }
 
-check_partition_table_selection() {
+function check_partition_table_selection() {
 	if [[ -n ${PARTITION_TABLE} ]]; then
 		return 0
 	else
@@ -772,7 +775,7 @@ check_partition_table_selection() {
 	fi
 }
 
-check_selected_disk_status() {
+function check_selected_disk_status() {
 	disk_status="\n* Selected disk: ${DISK}\n\n"
 	disk_status="${disk_status}* Partition table: ${PARTITION_TABLE}\n\n"
 	if [[ ${PARTITION_TABLE} == bios_mbr && ${PARTITION_SCHEME} == auto_partitions_noswap ]]; then
@@ -805,7 +808,7 @@ check_selected_disk_status() {
 		whiptail --backtitle "${apptitle}" --title "${txtselecteddiskstatus}" --msgbox "${status_msg}" 0 0
 	fi
 }
-confirm_format_partitions() {
+function confirm_format_partitions() {
 	if check_disk_selection; then
 		if check_partition_table_selection; then
 			check_selected_disk_status
@@ -826,7 +829,7 @@ confirm_format_partitions() {
 	fi
 }
 
-format_partitions() {
+function format_partitions() {
 	if confirm_format_partitions; then
 		case ${PARTITION_SCHEME} in
 		"auto_partitions_noswap" | "auto_partitions_with_swap") format_auto_partitions ;;
@@ -838,12 +841,12 @@ format_partitions() {
 	fi
 }
 
-format_auto_partitions() {
+function format_auto_partitions() {
 	filesystem
 	filesystem_pkgs
 }
 
-filesystem() {
+function filesystem() {
 	options=()
 	options+=("ext4" "")
 	options+=("btrfs" "")
@@ -881,7 +884,7 @@ filesystem() {
 	fi
 }
 
-filesystem_pkgs() {
+function filesystem_pkgs() {
 	options=()
 	if [[ ${fs_pkgs} == *"btrfs-progs"* ]]; then
 		options+=("btrfs-progs" "" on)
@@ -969,7 +972,7 @@ filesystem_pkgs() {
 	fi
 }
 
-format_manual_partitions() {
+function format_manual_partitions() {
 
 	options=()
 	partitions=()
@@ -1133,7 +1136,7 @@ format_manual_partitions() {
 }
 
 # Function to prompt for subvolumes and mountpoints
-prompt_for_subvolumes_mountpoints() {
+function prompt_for_subvolumes_mountpoints() {
 	local btrfs_subvolumes=()
 	local btrfs_subvolumes_mountpoints=()
 
@@ -1165,7 +1168,7 @@ prompt_for_subvolumes_mountpoints() {
 	fi
 }
 
-swapfile() {
+function swapfile() {
 	if (whiptail --backtitle "${apptitle}" --title "${txtswapfile}" \
 		--defaultno --yesno "${txtaskswapfile}" 7 38); then
 
@@ -1189,7 +1192,7 @@ swapfile() {
 
 # ----------------------------------------------------------------------------------------------------
 
-usersmenu() {
+function usersmenu() {
 	if [[ ${1} == "" ]]; then
 		nextitem="."
 	else
@@ -1236,7 +1239,7 @@ usersmenu() {
 	fi
 }
 
-set_hostname() {
+function set_hostname() {
 	hostname=$(whiptail --backtitle "${apptitle}" --title "${txtsethostname}" \
 		--nocancel --inputbox "Enter the hostname for this system:" 8 45 "ArchLinux" 3>&1 1>&2 2>&3)
 
@@ -1250,7 +1253,7 @@ set_hostname() {
 	fi
 }
 
-set_username() {
+function set_username() {
 	username=$(whiptail --backtitle "${apptitle}" --title "${txtsetusername}" \
 		--nocancel --inputbox "Username for your account:" 8 45 "" 3>&1 1>&2 2>&3)
 
@@ -1263,7 +1266,7 @@ set_username() {
 	fi
 }
 
-set_password() {
+function set_password() {
 	PASSWORD1=$(whiptail --backtitle "${apptitle}" --title "${txtpassword//%1/${1}}" \
 		--nocancel --passwordbox "${txtaskpassword//%1/Enter}" 8 45 3>&1 1>&2 2>&3)
 
@@ -1285,17 +1288,17 @@ set_password() {
 	fi
 }
 
-set_rootpassword() {
+function set_rootpassword() {
 	set_password "ROOT" "ROOT_PASSWORD"
 }
 
-set_userpassword() {
+function set_userpassword() {
 	set_password "USER" "USER_PASSWORD"
 }
 
 # ----------------------------------------------------------------------------------------------------
 
-installmenu() {
+function installmenu() {
 	if [[ ${1} == "" ]]; then
 		nextitem="."
 	else
@@ -1347,7 +1350,7 @@ installmenu() {
 	fi
 }
 
-install_kernel() {
+function install_kernel() {
 	options=()
 	options+=("linux" "")
 	options+=("linux-lts" "")
@@ -1379,7 +1382,7 @@ install_kernel() {
 		set_option "kernel_pkgs" '("linux" "linux-headers" "linux-docs")'
 	fi
 }
-install_desktop_env() {
+function install_desktop_env() {
 	items=($(for f in pkg-files/*.txt; do echo "${f}" | sed -r "s/.+\/(.+)\..+/\1/;/pkgs/d"; done))
 	options=()
 	for item in "${items[@]}"; do
@@ -1400,7 +1403,7 @@ install_desktop_env() {
 	fi
 }
 
-install_type() {
+function install_type() {
 	options=()
 	options+=("Minimal" "A minimal functional desktop with only few selected apps to get you started" on)
 	options+=("Full" "A full featured desktop, with added apps and themes needed for everyday use" off)
@@ -1419,7 +1422,7 @@ install_type() {
 	fi
 }
 
-install_aur_helper() {
+function install_aur_helper() {
 	options=()
 	options+=("yay" "")
 	options+=("yay-bin" "")
@@ -1450,7 +1453,7 @@ install_aur_helper() {
 	fi
 }
 
-install_flatpak() {
+function install_flatpak() {
 	if (whiptail --backtitle "${apptitle}" --title "${txtflatpak}" \
 		--yesno "${txtinstallflatpak}" 7 35); then
 
@@ -1461,7 +1464,7 @@ install_flatpak() {
 }
 
 # ----------------------------------------------------------------------------------------------------
-summary() {
+function summary() {
 	# Define the path to the file you want to edit
 	file_path="${CONFIG_FILE}"
 
@@ -1470,12 +1473,12 @@ summary() {
 }
 
 # Function to display the file content in a whiptail box
-display_file() {
+function display_file() {
 	whiptail --backtitle "${apptitle}" --title "${txtconfigfile}" --textbox "${file_path}" 35 90
 }
 
 # Function to edit the file
-edit_file() {
+function edit_file() {
 
 	if whiptail --backtitle "${apptitle}" --title "${txtconfigfile}" \
 		--yesno "Do you want to edit anything?" 7 33; then
@@ -1509,7 +1512,7 @@ edit_file() {
 
 # ----------------------------------------------------------------------------------------------------
 
-install_arch() {
+function install_arch() {
 	if (whiptail --backtitle "${apptitle}" --title "${txtinstallarch}" \
 		--defaultno --yesno "Start Arch Linux installation?" 7 34); then
 
@@ -1522,6 +1525,7 @@ install_arch() {
 # ----------------------------------------------------------------------------------------------------
 
 background_checks
+install_prerequisites
 EDITOR=nano
 load_strings
 welcome
