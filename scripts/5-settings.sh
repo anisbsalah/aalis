@@ -80,6 +80,7 @@ if [[ ${DESKTOP_ENV,,} == kde ]]; then
 	SDDM_THEME_CONF="/usr/share/sddm/themes/breeze/theme.conf.user"
 	SDDM_BG="/usr/share/backgrounds/AbS-Wallpapers/sddm_bg.jpg"
 
+	mkdir -p /etc/sddm.conf.d
 	sudo tee "${SDDM_CONF}" <<EOF
 [Autologin]
 Relogin=false
@@ -173,18 +174,6 @@ if [[ ${DESKTOP_ENV,,} == kde ]]; then
 
 	# -------------------------------------------------
 
-	echo "[*] Setting wallpaper image..."
-	kwriteconfig6 --file plasmarc --group "Wallpapers" --key "usersWallpapers" "${DESKTOP_BG}"
-	kwriteconfig6 --file "plasma-org.kde.plasma.desktop-appletsrc" \
-		--group "Containments" \
-		--group "1" \
-		--group "Wallpaper" \
-		--group "org.kde.image" \
-		--group "General" \
-		--key "Image" "file://${DESKTOP_BG}"
-
-	# -------------------------------------------------
-
 	echo "[*] Setting colors and themes..."
 
 	# Global theme
@@ -255,6 +244,18 @@ EOF
 	}
 
 	set_dark_gtk
+
+	# -------------------------------------------------
+
+	echo "[*] Setting wallpaper image..."
+	kwriteconfig6 --file plasmarc --group "Wallpapers" --key "usersWallpapers" "${DESKTOP_BG}"
+	kwriteconfig6 --file "plasma-org.kde.plasma.desktop-appletsrc" \
+		--group "Containments" \
+		--group "1" \
+		--group "Wallpaper" \
+		--group "org.kde.image" \
+		--group "General" \
+		--key "Image" "file://${DESKTOP_BG}"
 
 	# -------------------------------------------------
 
