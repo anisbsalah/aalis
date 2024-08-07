@@ -80,7 +80,7 @@ if [[ ${DESKTOP_ENV,,} == kde ]]; then
 	SDDM_THEME_CONF="/usr/share/sddm/themes/breeze/theme.conf.user"
 	SDDM_BG="/usr/share/backgrounds/AbS-Wallpapers/sddm_bg.jpg"
 
-	mkdir -p /etc/sddm.conf.d
+	sudo mkdir -p /etc/sddm.conf.d
 	sudo tee "${SDDM_CONF}" <<EOF
 [Autologin]
 Relogin=false
