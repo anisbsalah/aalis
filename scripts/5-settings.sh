@@ -77,7 +77,7 @@ if [[ ${DESKTOP_ENV,,} == kde ]]; then
 	SDDM_THEME="breeze"
 	SDDM_CURSOR_THEME="Breeze_Light"
 	SDDM_FONT="Noto Sans,10,-1,0,400,0,0,0,0,0,0,0,0,0,0,1"
-	SDDM_THEME_CONF="/usr/share/sddm/themes/breeze/theme.conf.user"
+	SDDM_THEME_CONF="/usr/share/sddm/themes/${SDDM_THEME}/theme.conf.user"
 	SDDM_BG="/usr/share/backgrounds/AbS-Wallpapers/sddm_bg.jpg"
 
 	sudo mkdir -p /etc/sddm.conf.d
@@ -139,6 +139,7 @@ fi
 
 # ----------------------------------------------------------------------------------------------------
 
+DESKTOP_BG="/usr/share/backgrounds/AbS-Wallpapers/desktop_bg.jpg"
 LOOKANDFEEL="org.kde.breezedark.desktop"
 COLORSCHEME="ArcDark"
 DESKTOPTHEME="Arc-Dark"
@@ -246,8 +247,6 @@ EOF
 	# -------------------------------------------------
 
 	printf "\n[*] Setting wallpaper...\n"
-
-	DESKTOP_BG="/usr/share/backgrounds/AbS-Wallpapers/desktop_bg.jpg"
 
 	sudo tee /usr/local/bin/set-wallpaper.sh <<EOF
 #!/bin/bash
