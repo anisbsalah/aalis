@@ -33,9 +33,9 @@ sudo mkdir -p /usr/share/backgrounds/AbS-Wallpapers
 sudo cp ~/aalis/settings/backgrounds/* /usr/share/backgrounds/AbS-Wallpapers
 
 echo "[*] Cursors..."
-git clone https://github.com/anisbsalah/Catppuccin-Cursors.git /tmp/Catppuccin-Cursors
+git clone https://github.com/anisbsalah/Catppuccin-Cursors.git /tmp/Catppuccin-Cursors &>/dev/null
 sudo cp -rf /tmp/Catppuccin-Cursors/usr/share/icons/Catppuccin-Latte-Light-Cursors /usr/share/icons/
-git clone https://github.com/anisbsalah/Qogir-Cursors.git /tmp/Qogir-Cursors
+git clone https://github.com/anisbsalah/Qogir-Cursors.git /tmp/Qogir-Cursors &>/dev/null
 sudo cp -rf /tmp/Qogir-Cursors/usr/share/icons/Qogir-Cursors /usr/share/icons/
 
 # ----------------------------------------------------------------------------------------------------
@@ -61,6 +61,8 @@ set_path() {
 }
 
 set_path ~/bin ~/scripts ~/.local/bin' | sudo tee -a /etc/profile
+
+echo
 
 # ----------------------------------------------------------------------------------------------------
 
@@ -142,7 +144,6 @@ fi
 DESKTOP_BG="/usr/share/backgrounds/AbS-Wallpapers/desktop_bg.jpg"
 LOOKANDFEEL="org.kde.breezedark.desktop"
 COLORSCHEME="ArcDark"
-KVANTUM_THEME="ArcDark"
 DESKTOPTHEME="Arc-Dark"
 GTK_THEME="Arc-Dark"
 ICON_THEME="Papirus-Dark"
