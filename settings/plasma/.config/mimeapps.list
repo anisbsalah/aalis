@@ -1,0 +1,18 @@
+[Added Associations]
+application/json=sublime_text.desktop;
+application/x-shellscript=sublime_text.desktop;
+application/x-zerosize=sublime_text.desktop;
+text/markdown=sublime_text.desktop;
+text/plain=sublime_text.desktop;
+text/x-log=sublime_text.desktop;
+
+[Default Applications]
+application/json=sublime_text.desktop;
+application/x-shellscript=sublime_text.desktop;
+application/x-zerosize=sublime_text.desktop;
+text/markdown=sublime_text.desktop;
+text/plain=sublime_text.desktop;
+text/x-log=sublime_text.desktop;
+x-scheme-handler/http=brave-browser.desktop
+x-scheme-handler/https=brave-browser.desktop
+text/html=brave-browser.desktop

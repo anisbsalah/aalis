@@ -350,6 +350,24 @@ EOF
 		--group "Applets" \
 		--group "3" \
 		--group "Configuration" \
+		--group "ConfigDialog" \
+		--key "DialogHeight" "540"
+
+	kwriteconfig6 --file plasma-org.kde.plasma.desktop-appletsrc \
+		--group "Containments" \
+		--group "2" \
+		--group "Applets" \
+		--group "3" \
+		--group "Configuration" \
+		--group "ConfigDialog" \
+		--key "DialogWidth" "720"
+
+	kwriteconfig6 --file plasma-org.kde.plasma.desktop-appletsrc \
+		--group "Containments" \
+		--group "2" \
+		--group "Applets" \
+		--group "3" \
+		--group "Configuration" \
 		--group "General" \
 		--key "applicationsDisplay" "0"
 
@@ -361,6 +379,15 @@ EOF
 		--group "Configuration" \
 		--group "General" \
 		--key "icon" "start-here-archlinux"
+
+	kwriteconfig6 --file plasma-org.kde.plasma.desktop-appletsrc \
+		--group "Containments" \
+		--group "2" \
+		--group "Applets" \
+		--group "3" \
+		--group "Configuration" \
+		--group "General" \
+		--key "systemFavorites" 'suspend\\,hibernate\\,reboot\\,shutdown'
 
 	# -------------------------------------------------
 
