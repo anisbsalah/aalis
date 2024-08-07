@@ -41,8 +41,8 @@ plugin=org.kde.plasma.kickoff
 
 [Containments][2][Applets][3][Configuration]
 PreloadWeight=100
-popupHeight=534
-popupWidth=667
+popupHeight=540
+popupWidth=670
 
 [Containments][2][Applets][3][Configuration][ConfigDialog]
 DialogHeight=540
