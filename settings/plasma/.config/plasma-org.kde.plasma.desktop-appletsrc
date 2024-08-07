@@ -15,6 +15,9 @@ location=0
 plugin=org.kde.plasma.folder
 wallpaperplugin=org.kde.image
 
+[Containments][23][Wallpaper][org.kde.image][General]
+Image=file:///usr/share/backgrounds/AbS-Wallpapers/desktop_bg.jpg
+
 [Containments][33]
 activityId=
 formfactor=2
