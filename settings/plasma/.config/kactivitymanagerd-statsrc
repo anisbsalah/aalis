@@ -1,5 +1,5 @@
-[Favorites-org.kde.plasma.kickoff.favorites.instance-3-06800d51-0c6a-49ee-b8e5-5ee9b5ed7ce9]
-ordering=applications:systemsettings.desktop,applications:Alacritty.desktop,applications:org.kde.dolphin.desktop,preferred://browser,applications:org.gnome.Meld.desktop,applications:sublime_text.desktop,applications:org.kde.discover.desktop
+[Favorites-org.kde.plasma.kickoff.favorites.instance-128-c71908de-e2ca-441c-a0db-276acd7ea230]
+ordering=applications:systemsettings.desktop,applications:Alacritty.desktop,applications:org.kde.dolphin.desktop,preferred://browser,applications:org.gnome.Meld.desktop,applications:sublime_text.desktop,applications:codium.desktop,applications:org.kde.discover.desktop
 
-[Favorites-org.kde.plasma.kickoff.favorites.instance-3-global]
-ordering=applications:systemsettings.desktop,applications:Alacritty.desktop,applications:org.kde.dolphin.desktop,preferred://browser,applications:org.gnome.Meld.desktop,applications:sublime_text.desktop,applications:org.kde.discover.desktop
+[Favorites-org.kde.plasma.kickoff.favorites.instance-128-global]
+ordering=applications:systemsettings.desktop,applications:Alacritty.desktop,applications:org.kde.dolphin.desktop,preferred://browser,applications:org.gnome.Meld.desktop,applications:sublime_text.desktop,applications:codium.desktop,applications:org.kde.discover.desktop

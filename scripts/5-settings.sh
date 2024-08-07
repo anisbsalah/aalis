@@ -141,7 +141,6 @@ fi
 
 # ----------------------------------------------------------------------------------------------------
 
-DESKTOP_BG="/usr/share/backgrounds/AbS-Wallpapers/desktop_bg.jpg"
 LOOKANDFEEL="org.kde.breezedark.desktop"
 COLORSCHEME="ArcDark"
 DESKTOPTHEME="Arc-Dark"
@@ -248,18 +247,6 @@ EOF
 
 	# -------------------------------------------------
 
-	echo "[*] Setting wallpaper image..."
-	kwriteconfig6 --file plasmarc --group "Wallpapers" --key "usersWallpapers" "${DESKTOP_BG}"
-	kwriteconfig6 --file "plasma-org.kde.plasma.desktop-appletsrc" \
-		--group "Containments" \
-		--group "1" \
-		--group "Wallpaper" \
-		--group "org.kde.image" \
-		--group "General" \
-		--key "Image" "file://${DESKTOP_BG}"
-
-	# -------------------------------------------------
-
 	echo "[*] Setting screen locking appearance..."
 	LOCK_IMAGE="/usr/share/backgrounds/AbS-Wallpapers/sddm_bg.jpg"
 	LOCK_PRVIEWIMAGE="/usr/share/backgrounds/AbS-Wallpapers/sddm_bg.jpg"
@@ -314,80 +301,6 @@ EOF
 	kwriteconfig6 --file kdeglobals --group "General" --key "BrowserApplication" "brave-browser.desktop"
 	kwriteconfig6 --file kdeglobals --group "General" --key "TerminalApplication" "alacritty"
 	kwriteconfig6 --file kdeglobals --group "General" --key "TerminalService" "Alacritty.desktop"
-
-	# -------------------------------------------------
-
-	echo "[*] Pinning applications to task manager..."
-	kwriteconfig6 --file plasma-org.kde.plasma.desktop-appletsrc \
-		--group "Containments" \
-		--group "2" \
-		--group "Applets" \
-		--group "5" \
-		--group "Configuration" \
-		--group "General" \
-		--key "launchers" "applications:systemsettings.desktop,applications:Alacritty.desktop,applications:org.kde.dolphin.desktop,applications:brave-browser.desktop,applications:org.gnome.Meld.desktop"
-
-	# Applications Launcher
-	kwriteconfig6 --file plasma-org.kde.plasma.desktop-appletsrc \
-		--group "Containments" \
-		--group "2" \
-		--group "Applets" \
-		--group "3" \
-		--group "Configuration" \
-		--key "popupHeight" "540"
-
-	kwriteconfig6 --file plasma-org.kde.plasma.desktop-appletsrc \
-		--group "Containments" \
-		--group "2" \
-		--group "Applets" \
-		--group "3" \
-		--group "Configuration" \
-		--key "popupWidth" "670"
-
-	kwriteconfig6 --file plasma-org.kde.plasma.desktop-appletsrc \
-		--group "Containments" \
-		--group "2" \
-		--group "Applets" \
-		--group "3" \
-		--group "Configuration" \
-		--group "ConfigDialog" \
-		--key "DialogHeight" "540"
-
-	kwriteconfig6 --file plasma-org.kde.plasma.desktop-appletsrc \
-		--group "Containments" \
-		--group "2" \
-		--group "Applets" \
-		--group "3" \
-		--group "Configuration" \
-		--group "ConfigDialog" \
-		--key "DialogWidth" "720"
-
-	kwriteconfig6 --file plasma-org.kde.plasma.desktop-appletsrc \
-		--group "Containments" \
-		--group "2" \
-		--group "Applets" \
-		--group "3" \
-		--group "Configuration" \
-		--group "General" \
-		--key "applicationsDisplay" "0"
-
-	kwriteconfig6 --file plasma-org.kde.plasma.desktop-appletsrc \
-		--group "Containments" \
-		--group "2" \
-		--group "Applets" \
-		--group "3" \
-		--group "Configuration" \
-		--group "General" \
-		--key "icon" "start-here-archlinux"
-
-	kwriteconfig6 --file plasma-org.kde.plasma.desktop-appletsrc \
-		--group "Containments" \
-		--group "2" \
-		--group "Applets" \
-		--group "3" \
-		--group "Configuration" \
-		--group "General" \
-		--key "systemFavorites" 'suspend\\,hibernate\\,reboot\\,shutdown'
 
 	# -------------------------------------------------
 
