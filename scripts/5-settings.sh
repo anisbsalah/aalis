@@ -183,6 +183,10 @@ if [[ ${DESKTOP_ENV,,} == kde ]]; then
 	kwriteconfig6 --file kdeglobals --group "General" --key "ColorScheme" "${COLORSCHEME}"
 	sudo kwriteconfig6 --file kdeglobals --group "General" --key "ColorScheme" "${COLORSCHEME}"
 
+	# Night Light
+	kwriteconfig6 --file kwinrc --group "NightColor" --key "Active" "true"
+	sudo kwriteconfig6 --file kwinrc --group "NightColor" --key "Active" "true"
+
 	# Application Style
 	kwriteconfig6 --file kdeglobals --group "KDE" --key "widgetStyle" "kvantum"
 	sudo kwriteconfig6 --file kdeglobals --group "KDE" --key "widgetStyle" "kvantum"
