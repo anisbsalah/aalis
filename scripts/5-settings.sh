@@ -38,6 +38,25 @@ sudo cp -rf /tmp/Catppuccin-Cursors/usr/share/icons/Catppuccin-Latte-Light-Curso
 git clone https://github.com/anisbsalah/Qogir-Cursors.git /tmp/Qogir-Cursors &>/dev/null
 sudo cp -rf /tmp/Qogir-Cursors/usr/share/icons/Qogir-Cursors /usr/share/icons/
 
+printf "\n[*] Codium extensions...\n"
+extensions=(
+	"EditorConfig.EditorConfig"
+	"esbenp.prettier-vscode"
+	"foxundermoon.shell-format"
+	"jeff-hykin.better-nix-syntax"
+	"JohnnyMorganz.stylua"
+	"mkhl.shfmt"
+	"ph-hawkins.arc-plus"
+	"PKief.material-icon-theme"
+	"rogalmic.bash-debug"
+	"timonwong.shellcheck"
+	"trunk.io"
+)
+
+for ext in "${extensions[@]}"; do
+	codium --install-extension "${ext}" --force
+done
+
 # ----------------------------------------------------------------------------------------------------
 
 printf "\n[*] Path...\n"
