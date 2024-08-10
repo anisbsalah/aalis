@@ -138,6 +138,10 @@ EOF
 fi
 
 # ----------------------------------------------------------------------------------------------------
+#
+# Specefic desktop settings
+#
+# ----------------------------------------------------------------------------------------------------
 
 DESKTOP_BG="/usr/share/backgrounds/AbS-Wallpapers/desktop_bg.jpg"
 LOOKANDFEEL="org.kde.breezedark.desktop"
