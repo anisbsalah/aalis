@@ -1,5 +1,6 @@
 # Alacritty - TOML configuration file.
 
+[general]
 import = ["/home/anisbsalah/.config/alacritty/colors.toml"]
 
 [colors]
